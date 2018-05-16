@@ -18,8 +18,6 @@ public class TiktaktoeApplication {
   @Bean
   public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
     return args -> {
-      Dashboard dashboard = new Dashboard();
-      System.out.println(dashboard.toString());
     };
   }
 }
