@@ -17,7 +17,6 @@ public class TiktaktoeApplication {
 
   @Bean
   public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-    return args -> {
-    };
+    return args -> {};
   }
 }

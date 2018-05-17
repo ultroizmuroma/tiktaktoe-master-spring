@@ -96,4 +96,17 @@ public class TiktaktoeApplicationTests {
     System.out.println(dashboard.toString());
     Assert.assertEquals(Dashboard.DEFAULT_EMPTY, dashboard.getWinner());
   }
+
+  @Test
+  public void completeGameTest() {
+	  Dashboard dashboard = new Dashboard();
+	  dashboard.setX(1, 1);
+	  dashboard.setO(0, 0);
+	  dashboard.setX(2, 0);
+	  dashboard.setO(0, 2);
+	  dashboard.setX(2, 2);
+	  dashboard.setO(0, 1);
+    System.out.println(dashboard.toString());
+	  Assert.assertEquals(Dashboard.DEFAULT_O, dashboard.getWinner());
+  }
 }
