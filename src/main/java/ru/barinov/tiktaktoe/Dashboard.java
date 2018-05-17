@@ -16,7 +16,7 @@ public class Dashboard {
 
   private int size;
   private String[][] field;
-  private ActiveCell lastCell = new ActiveCell(0, 0, null);
+  private DashboardCell lastCell = new DashboardCell(0, 0, null);
   private int winCount;
   private int emptyCells;
 
@@ -40,7 +40,7 @@ public class Dashboard {
     return winCount;
   }
 
-  public ActiveCell getLastCell() {
+  public DashboardCell getLastCell() {
     return lastCell;
   }
 

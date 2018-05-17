@@ -6,12 +6,12 @@ package ru.barinov.tiktaktoe;
  * Date: 17.05.2018
  * Time: 15:23
  */
-public class ActiveCell {
+public class DashboardCell {
   private int row;
   private int col;
   private String value;
 
-  public ActiveCell(int row, int col, String value) {
+  public DashboardCell(int row, int col, String value) {
     this.row = row;
     this.col = col;
     this.value = value;
