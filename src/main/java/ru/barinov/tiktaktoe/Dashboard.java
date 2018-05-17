@@ -1,5 +1,7 @@
 package ru.barinov.tiktaktoe;
 
+import java.util.logging.Logger;
+
 /**
  * @author alexey.barinov
  * @version 1.0
@@ -7,14 +9,16 @@ package ru.barinov.tiktaktoe;
  * Time: 11:37
  */
 public class Dashboard {
+  private static final Logger LOGGER = Logger.getLogger(Dashboard.class.getSimpleName());
   public static final String DEFAULT_X = "X";
   public static final String DEFAULT_O = "O";
   public static final String DEFAULT_EMPTY = " ";
 
   private int size;
   private String[][] field;
-  private ActiveCell lastCell = new ActiveCell(0, 0, DEFAULT_EMPTY);
+  private ActiveCell lastCell = new ActiveCell(0, 0, null);
   private int winCount;
+  private int emptyCells;
 
   public Dashboard() {
     this(3, 3);
@@ -24,6 +28,7 @@ public class Dashboard {
     this.size = size;
     field = new String[size][size];
     this.winCount = winCount;
+    emptyCells = size * size;
     refresh();
   }
 
@@ -34,33 +39,46 @@ public class Dashboard {
   public void refresh() {
     for (int row = 0; row < size; row++) {
       for (int col = 0; col < size; col++) {
-        setCellValue(row, col, DEFAULT_EMPTY);
+        field[row][col] = DEFAULT_EMPTY;
       }
     }
   }
 
-  public void setO(int row, int col) {
-    setCellValue(row, col, DEFAULT_O);
+  public boolean setO(int row, int col) {
+    return setCellValue(row, col, DEFAULT_O);
   }
 
-  public void setX(int row, int col) {
-    setCellValue(row, col, DEFAULT_X);
+  public boolean setX(int row, int col) {
+    return setCellValue(row, col, DEFAULT_X);
   }
 
-  private void setCellValue(int row, int col, String value) {
+  private boolean setCellValue(int row, int col, String value) {
     if (row < 0 || row >= size || col < 0 || col >= size) {
-      System.out.println("Игноририруется попытка выйти за пределы поля при установке: строка " + row + ", столбец " + col);
-      return;
+      LOGGER.warning(String.format("РРіРЅРѕСЂРёСЂРёСЂСѓРµС‚СЃСЏ РїРѕРїС‹С‚РєР° РІС‹Р№С‚Рё Р·Р° РїСЂРµРґРµР»С‹ РїРѕР»СЏ РїСЂРё СѓСЃС‚Р°РЅРѕРІРєРµ: СЃС‚СЂРѕРєР° %d, СЃС‚РѕР»Р±РµС† %d", row, col));
+      return false;
+    }
+    if (!DEFAULT_EMPTY.equals(field[row][col]) && !value.equals(DEFAULT_EMPTY)) {
+      LOGGER.warning(String.format("РЇС‡РµР№РєР° Р·Р°РЅСЏС‚Р°: СЃС‚СЂРѕРєР° %d, СЃС‚РѕР»Р±РµС† %d", row, col));
+      return false;
     }
     field[row][col] = value;
     lastCell.row = row;
     lastCell.col = col;
     lastCell.value = value;
+    emptyCells--;
+    return true;
+  }
+
+  public boolean setNext(int row, int col) {
+    if (DEFAULT_X.equals(lastCell.value)) {
+      return setO(row, col);
+    }
+    return setX(row, col);
   }
 
   public String getCellValue(int row, int col) {
     if (row < 0 || row >= size || col < 0 || col >= size) {
-      System.out.println("Игноририруется попытка выйти за пределы поля при получении: строка " + row + ", столбец " + col);
+      LOGGER.warning(String.format("РРіРЅРѕСЂРёСЂРёСЂСѓРµС‚СЃСЏ РїРѕРїС‹С‚РєР° РІС‹Р№С‚Рё Р·Р° РїСЂРµРґРµР»С‹ РїРѕР»СЏ РїСЂРё РїРѕР»СѓС‡РµРЅРёРё: СЃС‚СЂРѕРєР° %d, СЃС‚РѕР»Р±РµС† %d", row, col));
       return DEFAULT_EMPTY;
     }
     return field[row][col];
@@ -95,7 +113,10 @@ public class Dashboard {
     if (currentCount >= winCount) {
       return lastCell.value;
     }
-    return DEFAULT_EMPTY;
+    if (emptyCells == 0) {
+      return DEFAULT_EMPTY;
+    }
+    return null;
   }
 
   private int countVertical() {

@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Random;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TiktaktoeApplicationTests {
@@ -20,7 +22,7 @@ public class TiktaktoeApplicationTests {
     Assert.assertEquals(Dashboard.DEFAULT_O, dashboard.getCellValue(1, 2));
   }
 
-  //todo: Разбить на отдельные тесты, а то становится непонятным какой именно тест сломался
+  //todo: Р Р°Р·Р±РёС‚СЊ РЅР° РѕС‚РґРµР»СЊРЅС‹Рµ С‚РµСЃС‚С‹, Р° С‚Рѕ СЃС‚Р°РЅРѕРІРёС‚СЃСЏ РЅРµРїРѕРЅСЏС‚РЅС‹Рј РєР°РєРѕР№ РёРјРµРЅРЅРѕ С‚РµСЃС‚ СЃР»РѕРјР°Р»СЃСЏ
   @Test
   public void winConditionTest() {
     Dashboard dashboard = new Dashboard(4, 3);
@@ -108,5 +110,18 @@ public class TiktaktoeApplicationTests {
 	  dashboard.setO(0, 1);
     System.out.println(dashboard.toString());
 	  Assert.assertEquals(Dashboard.DEFAULT_O, dashboard.getWinner());
+  }
+
+  @Test
+  public void randomGameTest() {
+	  Dashboard dashboard = new Dashboard(10, 3);
+    Random generator = new Random();
+    while (dashboard.getWinner() == null) {
+      int row = generator.nextInt(dashboard.getSize());
+      int col = generator.nextInt(dashboard.getSize());
+      dashboard.setNext(row, col);
+    }
+    System.out.println(dashboard.toString());
+    System.out.println(dashboard.getWinner());
   }
 }
