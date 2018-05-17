@@ -26,18 +26,19 @@ public class TiktaktoeApplicationTests {
   @Test
   public void winConditionTest() {
     Dashboard dashboard = new Dashboard(4, 3);
+    DashboardInspector inspector = new DashboardInspector(dashboard);
     for (int i = 0; i < dashboard.getSize(); i++) {
       dashboard.setX(i, 0);
     }
     System.out.println(dashboard.toString());
-    Assert.assertEquals(Dashboard.DEFAULT_X, dashboard.getWinner());
+    Assert.assertEquals(Dashboard.DEFAULT_X, inspector.getWinner());
     dashboard.refresh();
 
     for (int i = 0; i < 2; i++) {
       dashboard.setX(i, 0);
     }
     System.out.println(dashboard.toString());
-    Assert.assertEquals(Dashboard.DEFAULT_EMPTY, dashboard.getWinner());
+    Assert.assertEquals(null, inspector.getWinner());
     dashboard.refresh();
 
 
@@ -45,14 +46,14 @@ public class TiktaktoeApplicationTests {
       dashboard.setX(0, i);
     }
     System.out.println(dashboard.toString());
-    Assert.assertEquals(Dashboard.DEFAULT_X, dashboard.getWinner());
+    Assert.assertEquals(Dashboard.DEFAULT_X, inspector.getWinner());
     dashboard.refresh();
 
     for (int i = 0; i < 2; i++) {
       dashboard.setX(0, i);
     }
     System.out.println(dashboard.toString());
-    Assert.assertEquals(Dashboard.DEFAULT_EMPTY, dashboard.getWinner());
+    Assert.assertEquals(null, inspector.getWinner());
     dashboard.refresh();
 
 
@@ -60,14 +61,14 @@ public class TiktaktoeApplicationTests {
       dashboard.setX(i, i + 1);
     }
     System.out.println(dashboard.toString());
-    Assert.assertEquals(Dashboard.DEFAULT_X, dashboard.getWinner());
+    Assert.assertEquals(Dashboard.DEFAULT_X, inspector.getWinner());
     dashboard.refresh();
 
     for (int i = 0; i < 2; i++) {
       dashboard.setX(i, i + 1);
     }
     System.out.println(dashboard.toString());
-    Assert.assertEquals(Dashboard.DEFAULT_EMPTY, dashboard.getWinner());
+    Assert.assertEquals(null, inspector.getWinner());
     dashboard.refresh();
 
 
@@ -75,14 +76,14 @@ public class TiktaktoeApplicationTests {
       dashboard.setX(i + 1, dashboard.getSize() - 1 - i);
     }
     System.out.println(dashboard.toString());
-    Assert.assertEquals(Dashboard.DEFAULT_X, dashboard.getWinner());
+    Assert.assertEquals(Dashboard.DEFAULT_X, inspector.getWinner());
     dashboard.refresh();
 
     for (int i = 0; i < 2; i++) {
       dashboard.setX(i + 1, dashboard.getSize() - 1 - i);
     }
     System.out.println(dashboard.toString());
-    Assert.assertEquals(Dashboard.DEFAULT_EMPTY, dashboard.getWinner());
+    Assert.assertEquals(null, inspector.getWinner());
     dashboard.refresh();
 
     dashboard.setX(0, 0);
@@ -96,12 +97,13 @@ public class TiktaktoeApplicationTests {
     dashboard.setX(3, 2);
     dashboard.setX(3, 3);
     System.out.println(dashboard.toString());
-    Assert.assertEquals(Dashboard.DEFAULT_EMPTY, dashboard.getWinner());
+    Assert.assertEquals(null, inspector.getWinner());
   }
 
   @Test
   public void completeGameTest() {
 	  Dashboard dashboard = new Dashboard();
+	  DashboardInspector inspector = new DashboardInspector(dashboard);
 	  dashboard.setX(1, 1);
 	  dashboard.setO(0, 0);
 	  dashboard.setX(2, 0);
@@ -109,19 +111,20 @@ public class TiktaktoeApplicationTests {
 	  dashboard.setX(2, 2);
 	  dashboard.setO(0, 1);
     System.out.println(dashboard.toString());
-	  Assert.assertEquals(Dashboard.DEFAULT_O, dashboard.getWinner());
+	  Assert.assertEquals(Dashboard.DEFAULT_O, inspector.getWinner());
   }
 
   @Test
   public void randomGameTest() {
 	  Dashboard dashboard = new Dashboard(10, 3);
+    DashboardInspector inspector = new DashboardInspector(dashboard);
     Random generator = new Random();
-    while (dashboard.getWinner() == null) {
+    while (inspector.getWinner() == null) {
       int row = generator.nextInt(dashboard.getSize());
       int col = generator.nextInt(dashboard.getSize());
       dashboard.setNext(row, col);
     }
     System.out.println(dashboard.toString());
-    System.out.println(dashboard.getWinner());
+    System.out.println(inspector.getWinner());
   }
 }

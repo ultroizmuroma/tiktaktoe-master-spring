@@ -36,6 +36,18 @@ public class Dashboard {
     return size;
   }
 
+  public int getWinCount() {
+    return winCount;
+  }
+
+  public ActiveCell getLastCell() {
+    return lastCell;
+  }
+
+  public int getEmptyCells() {
+    return emptyCells;
+  }
+
   public void refresh() {
     for (int row = 0; row < size; row++) {
       for (int col = 0; col < size; col++) {
@@ -62,15 +74,15 @@ public class Dashboard {
       return false;
     }
     field[row][col] = value;
-    lastCell.row = row;
-    lastCell.col = col;
-    lastCell.value = value;
+    lastCell.setRow(row);
+    lastCell.setCol(col);
+    lastCell.setValue(value);
     emptyCells--;
     return true;
   }
 
   public boolean setNext(int row, int col) {
-    if (DEFAULT_X.equals(lastCell.value)) {
+    if (DEFAULT_X.equals(lastCell.getValue())) {
       return setO(row, col);
     }
     return setX(row, col);
@@ -94,116 +106,5 @@ public class Dashboard {
       result += "\r\n";
     }
     return result;
-  }
-
-  public String getWinner() {
-    int currentCount = countVertical();
-    if (currentCount >= winCount) {
-      return lastCell.value;
-    }
-    currentCount = countRightDiagonal();
-    if (currentCount >= winCount) {
-      return lastCell.value;
-    }
-    currentCount = countHorizontal();
-    if (currentCount >= winCount) {
-      return lastCell.value;
-    }
-    currentCount = countLeftDiagonal();
-    if (currentCount >= winCount) {
-      return lastCell.value;
-    }
-    if (emptyCells == 0) {
-      return DEFAULT_EMPTY;
-    }
-    return null;
-  }
-
-  private int countVertical() {
-    int currentCount = 0;
-    for (int i = lastCell.row - 1; i > -1; i--) {
-      if (getCellValue(i, lastCell.col).equals(lastCell.value)) {
-        currentCount++;
-      } else {
-        break;
-      }
-    }
-    for (int i = lastCell.row + 1; i < size; i++) {
-      if (getCellValue(i, lastCell.col).equals(lastCell.value)) {
-        currentCount++;
-      } else {
-        break;
-      }
-    }
-    return currentCount + 1;
-  }
-
-  private int countLeftDiagonal() {
-    int currentCount = 0;
-    for (int i = lastCell.row - 1, j = lastCell.col - 1; i > -1 && j > -1; i--, j--) {
-      if (getCellValue(i, j).equals(lastCell.value)) {
-        currentCount++;
-      } else {
-        break;
-      }
-    }
-    for (int i = lastCell.row + 1, j = lastCell.col + 1; i < size && j < size; i++, j++) {
-      if (getCellValue(i, j).equals(lastCell.value)) {
-        currentCount++;
-      } else {
-        break;
-      }
-    }
-    return currentCount + 1;
-  }
-
-  private int countHorizontal() {
-    int currentCount = 0;
-    for (int i = lastCell.col - 1; i > -1; i--) {
-      if (getCellValue(lastCell.row, i).equals(lastCell.value)) {
-        currentCount++;
-      } else {
-        break;
-      }
-    }
-    for (int i = lastCell.col + 1; i < size; i++) {
-      if (getCellValue(lastCell.row, i).equals(lastCell.value)) {
-        currentCount++;
-      } else {
-        break;
-      }
-    }
-    return currentCount + 1;
-  }
-
-  private int countRightDiagonal() {
-    int currentCount = 0;
-    for (int i = lastCell.row - 1, j = lastCell.col + 1; i > -1 && j > -1; i--, j++) {
-      if (getCellValue(i, j).equals(lastCell.value)) {
-        currentCount++;
-      } else {
-        break;
-      }
-    }
-    for (int i = lastCell.row + 1, j = lastCell.col - 1; i < size && j < size; i++, j--) {
-      if (getCellValue(i, j).equals(lastCell.value)) {
-        currentCount++;
-      } else {
-        break;
-      }
-    }
-    return currentCount + 1;
-  }
-
-  private class ActiveCell {
-    int row;
-    int col;
-    String value;
-
-    ActiveCell(int row, int col, String value) {
-      this.row = row;
-      this.col = col;
-      this.value = value;
-    }
   }
 }
