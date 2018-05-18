@@ -24,6 +24,10 @@ public class Dashboard {
     this(3, 3);
   }
 
+  public Dashboard(int size) {
+    this(size, 3);
+  }
+
   public Dashboard(int size, int winCount) {
     this.size = size;
     field = new String[size][size];

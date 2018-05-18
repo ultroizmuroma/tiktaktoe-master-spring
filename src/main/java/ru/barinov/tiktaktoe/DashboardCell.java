@@ -40,4 +40,18 @@ public class DashboardCell {
   public void setValue(String value) {
     this.value = value;
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    DashboardCell cell = (DashboardCell) obj;
+    return row == cell.getRow() && col == cell.getCol() && value.equals(cell.getValue());
+  }
+
+  @Override
+  public String toString() {
+    return "{row: " + row + ", col: " + col + ", value: " + value + "}";
+  }
 }

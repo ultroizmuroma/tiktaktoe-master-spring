@@ -24,19 +24,19 @@ public class DashboardInspector {
   }
 
   public String getWinner(DashboardCell activeCell) {
-    int currentCount = countVertical(activeCell);
+    int currentCount = countVertical(activeCell).getLength();
     if (currentCount >= winCount) {
       return activeCell.getValue();
     }
-    currentCount = countRightDiagonal(activeCell);
+    currentCount = countRightDiagonal(activeCell).getLength();
     if (currentCount >= winCount) {
       return activeCell.getValue();
     }
-    currentCount = countHorizontal(activeCell);
+    currentCount = countHorizontal(activeCell).getLength();
     if (currentCount >= winCount) {
       return activeCell.getValue();
     }
-    currentCount = countLeftDiagonal(activeCell);
+    currentCount = countLeftDiagonal(activeCell).getLength();
     if (currentCount >= winCount) {
       return activeCell.getValue();
     }
@@ -45,12 +45,16 @@ public class DashboardInspector {
     }
     return null;
   }
-//todo: Нужно возвращать не int, а структуру с результатом анализа (от, до, продолжительность)
-  private int countVertical(DashboardCell activeCell) {
+
+  public InspectionResult countVertical(DashboardCell activeCell) {
     int currentCount = 0;
+    InspectionResult inspectionResult = new InspectionResult(null, null, 0);
+    DashboardCell from = new DashboardCell(activeCell.getRow(), activeCell.getCol(), activeCell.getValue());
+    DashboardCell to = new DashboardCell(activeCell.getRow(), activeCell.getCol(), activeCell.getValue());
     for (int i = activeCell.getRow() - 1; i > -1; i--) {
       if (field.getCellValue(i, activeCell.getCol()).equals(activeCell.getValue())) {
         currentCount++;
+        from.setRow(i);
       } else {
         break;
       }
@@ -58,18 +62,27 @@ public class DashboardInspector {
     for (int i = activeCell.getRow() + 1; i < field.getSize(); i++) {
       if (field.getCellValue(i, activeCell.getCol()).equals(activeCell.getValue())) {
         currentCount++;
+        to.setRow(i);
       } else {
         break;
       }
     }
-    return currentCount + 1;
+    inspectionResult.setFrom(from);
+    inspectionResult.setTo(to);
+    inspectionResult.setLength(currentCount + 1);
+    return inspectionResult;
   }
 
-  private int countLeftDiagonal(DashboardCell activeCell) {
+  public InspectionResult countLeftDiagonal(DashboardCell activeCell) {
     int currentCount = 0;
+    InspectionResult inspectionResult = new InspectionResult(null, null, 0);
+    DashboardCell from = new DashboardCell(activeCell.getRow(), activeCell.getCol(), activeCell.getValue());
+    DashboardCell to = new DashboardCell(activeCell.getRow(), activeCell.getCol(), activeCell.getValue());
     for (int i = activeCell.getRow() - 1, j = activeCell.getCol() - 1; i > -1 && j > -1; i--, j--) {
       if (field.getCellValue(i, j).equals(activeCell.getValue())) {
         currentCount++;
+        from.setRow(i);
+        from.setCol(j);
       } else {
         break;
       }
@@ -77,18 +90,28 @@ public class DashboardInspector {
     for (int i = activeCell.getRow() + 1, j = activeCell.getCol() + 1; i < field.getSize() && j < field.getSize(); i++, j++) {
       if (field.getCellValue(i, j).equals(activeCell.getValue())) {
         currentCount++;
+        from.setRow(i);
+        from.setCol(j);
       } else {
         break;
       }
     }
-    return currentCount + 1;
+
+    inspectionResult.setFrom(from);
+    inspectionResult.setTo(to);
+    inspectionResult.setLength(currentCount + 1);
+    return inspectionResult;
   }
 
-  private int countHorizontal(DashboardCell activeCell) {
+  public InspectionResult countHorizontal(DashboardCell activeCell) {
     int currentCount = 0;
+    InspectionResult inspectionResult = new InspectionResult(null, null, 0);
+    DashboardCell from = new DashboardCell(activeCell.getRow(), activeCell.getCol(), activeCell.getValue());
+    DashboardCell to = new DashboardCell(activeCell.getRow(), activeCell.getCol(), activeCell.getValue());
     for (int i = activeCell.getCol() - 1; i > -1; i--) {
       if (field.getCellValue(activeCell.getRow(), i).equals(activeCell.getValue())) {
         currentCount++;
+        from.setCol(i);
       } else {
         break;
       }
@@ -96,18 +119,27 @@ public class DashboardInspector {
     for (int i = activeCell.getCol() + 1; i < field.getSize(); i++) {
       if (field.getCellValue(activeCell.getRow(), i).equals(activeCell.getValue())) {
         currentCount++;
+        to.setCol(i);
       } else {
         break;
       }
     }
-    return currentCount + 1;
+    inspectionResult.setFrom(from);
+    inspectionResult.setTo(to);
+    inspectionResult.setLength(currentCount + 1);
+    return inspectionResult;
   }
 
-  private int countRightDiagonal(DashboardCell activeCell) {
+  public InspectionResult countRightDiagonal(DashboardCell activeCell) {
     int currentCount = 0;
+    InspectionResult inspectionResult = new InspectionResult(null, null, 0);
+    DashboardCell from = new DashboardCell(activeCell.getRow(), activeCell.getCol(), activeCell.getValue());
+    DashboardCell to = new DashboardCell(activeCell.getRow(), activeCell.getCol(), activeCell.getValue());
     for (int i = activeCell.getRow() - 1, j = activeCell.getCol() + 1; i > -1 && j > -1; i--, j++) {
       if (field.getCellValue(i, j).equals(activeCell.getValue())) {
         currentCount++;
+        from.setRow(i);
+        from.setCol(i);
       } else {
         break;
       }
@@ -115,10 +147,15 @@ public class DashboardInspector {
     for (int i = activeCell.getRow() + 1, j = activeCell.getCol() - 1; i < field.getSize() && j < field.getSize(); i++, j--) {
       if (field.getCellValue(i, j).equals(activeCell.getValue())) {
         currentCount++;
+        to.setRow(i);
+        to.setCol(i);
       } else {
         break;
       }
     }
-    return currentCount + 1;
+    inspectionResult.setFrom(from);
+    inspectionResult.setTo(to);
+    inspectionResult.setLength(currentCount + 1);
+    return inspectionResult;
   }
 }

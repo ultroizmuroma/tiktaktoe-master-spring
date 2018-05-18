@@ -22,7 +22,6 @@ public class TiktaktoeApplicationTests {
     Assert.assertEquals(Dashboard.DEFAULT_O, dashboard.getCellValue(1, 2));
   }
 
-  //todo: Разбить на отдельные тесты, а то становится непонятным какой именно тест сломался
   @Test
   public void winConditionTest() {
     Dashboard dashboard = new Dashboard(4, 3);
@@ -116,7 +115,7 @@ public class TiktaktoeApplicationTests {
 
   @Test
   public void randomGameTest() {
-	  Dashboard dashboard = new Dashboard(10, 3);
+	  Dashboard dashboard = new Dashboard(10, 5);
     DashboardInspector inspector = new DashboardInspector(dashboard);
     Random generator = new Random();
     while (inspector.getWinner() == null) {
@@ -126,5 +125,53 @@ public class TiktaktoeApplicationTests {
     }
     System.out.println(dashboard.toString());
     System.out.println(inspector.getWinner());
+  }
+
+  @Test
+  public void computeIntervalTest() {
+	  Dashboard dashboard = new Dashboard(10, 3);
+	  DashboardInspector inspector = new DashboardInspector(dashboard);
+    dashboard.setX(5, 5);
+    dashboard.setX(5, 6);
+    dashboard.setX(5, 7);
+    dashboard.setX(4, 6);
+    dashboard.setX(6, 6);
+    System.out.println(dashboard.toString());
+    InspectionResult horizontalInspectionResult = new InspectionResult(
+            new DashboardCell(5, 5, Dashboard.DEFAULT_X),
+            new DashboardCell(5, 7, Dashboard.DEFAULT_X),
+            3);
+
+    InspectionResult rightDiagonalInspectionResult = new InspectionResult(
+            new DashboardCell(5, 6, Dashboard.DEFAULT_X),
+            new DashboardCell(5, 6, Dashboard.DEFAULT_X),
+            1);
+
+    InspectionResult leftDiagonalInspectionResult = new InspectionResult(
+            new DashboardCell(5, 6, Dashboard.DEFAULT_X),
+            new DashboardCell(5, 6, Dashboard.DEFAULT_X),
+            1);
+
+    InspectionResult verticalInspectionResult = new InspectionResult(
+            new DashboardCell(4, 6, Dashboard.DEFAULT_X),
+            new DashboardCell(6, 6, Dashboard.DEFAULT_X),
+            3);
+
+    DashboardCell activeCell = new DashboardCell(5, 6, Dashboard.DEFAULT_X);
+    Assert.assertEquals(horizontalInspectionResult, inspector.countHorizontal(activeCell));
+    Assert.assertEquals(rightDiagonalInspectionResult, inspector.countRightDiagonal(activeCell));
+    Assert.assertEquals(leftDiagonalInspectionResult, inspector.countLeftDiagonal(activeCell));
+    Assert.assertEquals(verticalInspectionResult, inspector.countVertical(activeCell));
+  }
+
+  @Test
+  public void inspectionResultEquals() {
+    DashboardCell from = new DashboardCell(5, 5, Dashboard.DEFAULT_X);
+    DashboardCell from2 = new DashboardCell(5, 5, Dashboard.DEFAULT_X);
+    DashboardCell to = new DashboardCell(5, 7, Dashboard.DEFAULT_X);
+    DashboardCell to2 = new DashboardCell(5, 7, Dashboard.DEFAULT_X);
+    InspectionResult inspectionResult = new InspectionResult(from, to, 3);
+    InspectionResult inspectionResult2 = new InspectionResult(from2, to2, 3);
+    Assert.assertEquals(inspectionResult, inspectionResult2);
   }
 }
