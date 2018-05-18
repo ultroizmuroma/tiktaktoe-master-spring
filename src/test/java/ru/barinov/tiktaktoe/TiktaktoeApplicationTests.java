@@ -170,8 +170,12 @@ public class TiktaktoeApplicationTests {
     DashboardCell from2 = new DashboardCell(5, 5, Dashboard.DEFAULT_X);
     DashboardCell to = new DashboardCell(5, 7, Dashboard.DEFAULT_X);
     DashboardCell to2 = new DashboardCell(5, 7, Dashboard.DEFAULT_X);
-    InspectionResult inspectionResult = new InspectionResult(from, to, 3);
+    InspectionResult inspectionResult1 = new InspectionResult(from, to, 3);
     InspectionResult inspectionResult2 = new InspectionResult(from2, to2, 3);
-    Assert.assertEquals(inspectionResult, inspectionResult2);
+    InspectionResult inspectionResult1Mirror = new InspectionResult(to, from, 3);
+    InspectionResult inspectionResult2Mirror = new InspectionResult(to2, from2, 3);
+    Assert.assertEquals(inspectionResult1, inspectionResult2);
+    Assert.assertEquals(inspectionResult1, inspectionResult1Mirror);
+    Assert.assertEquals(inspectionResult2, inspectionResult2Mirror);
   }
 }

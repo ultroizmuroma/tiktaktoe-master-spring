@@ -47,7 +47,8 @@ public class InspectionResult {
       return false;
     }
     InspectionResult inspectionResult = (InspectionResult) obj;
-    return to.equals(inspectionResult.getTo()) && from.equals(inspectionResult.getFrom());
+    return to.equals(inspectionResult.getTo()) && from.equals(inspectionResult.getFrom())
+            || to.equals(inspectionResult.getFrom()) && from.equals(inspectionResult.getTo());
   }
 
   @Override
