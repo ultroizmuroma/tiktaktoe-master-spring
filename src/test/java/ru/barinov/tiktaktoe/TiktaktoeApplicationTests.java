@@ -20,7 +20,7 @@ public class TiktaktoeApplicationTests {
     Assert.assertEquals(Dashboard.DEFAULT_EMPTY, dashboard.getCellValue(0, 0));
     Assert.assertEquals(Dashboard.DEFAULT_X, dashboard.getCellValue(1, 1));
     Assert.assertEquals(Dashboard.DEFAULT_O, dashboard.getCellValue(1, 2));
-  }
+  }//test
 
   @Test
   public void winConditionTest() {
